@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <rect width="800" height="500" fill="#EFEAE0"/>
+  <rect x="1" y="1" width="798" height="498" fill="none" stroke="#D8D2C2" stroke-width="2"/>
+  <line x1="0" y1="0" x2="800" y2="500" stroke="#D8D2C2" stroke-width="1"/>
+  <line x1="800" y1="0" x2="0" y2="500" stroke="#D8D2C2" stroke-width="1"/>
+  <text x="400" y="240" font-family="Courier New, monospace" font-size="18" fill="#4A4742" text-anchor="middle">IMAGE PLACEHOLDER</text>
+  <text x="400" y="266" font-family="Courier New, monospace" font-size="13" fill="#4A4742" text-anchor="middle">replace this file in /images with your own photo</text>
+</svg>

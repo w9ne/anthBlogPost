@@ -1,0 +1,628 @@
+/* ============================================================
+   GLOBALIZATION FIELD JOURNAL — STYLESHEET
+   ============================================================
+   Everything you'll want to tweak lives in :root at the top.
+   Change a color or font there and it updates everywhere.
+
+   TABLE OF CONTENTS
+   1. Design tokens (colors, fonts, spacing)
+   2. Reset & base styles
+   3. Layout (header, nav, footer, containers)
+   4. Typography
+   5. Hero section (homepage)
+   6. Route line animation (the signature visual)
+   7. Index rail (the side "coordinates" navigation)
+   8. Entry / chapter cards
+   9. Single post page styles
+   10. Images & captions
+   11. Pull quotes & callouts
+   12. Footnotes & citations
+   13. Responsive rules
+   ============================================================ */
+
+
+/* ---------- 1. DESIGN TOKENS ---------- */
+:root {
+  /* Colors — named after the subject: paper, ink, indigo dye, rust/spice, gold thread */
+  --paper:        #F7F4ED;
+  --paper-dim:    #EFEAE0;
+  --ink:          #1C1B19;
+  --ink-soft:     #4A4742;
+  --indigo:       #3B4A6B;
+  --indigo-deep:  #28334B;
+  --rust:         #B5562F;
+  --gold:         #C9A04E;
+  --line:         #D8D2C2;
+
+  /* Type */
+  --font-display: "Iowan Old Style", "Palatino Linotype", Georgia, "Times New Roman", serif;
+  --font-body:    "Avenir Next", "Segoe UI", Helvetica, Arial, sans-serif;
+  --font-mono:    "JetBrains Mono", "Courier New", monospace;
+
+  /* Type scale */
+  --step-hero:    clamp(2.8rem, 6vw, 5.2rem);
+  --step-h1:      clamp(2rem, 4vw, 3rem);
+  --step-h2:      clamp(1.5rem, 2.8vw, 2.1rem);
+  --step-h3:      1.3rem;
+  --step-body:    1.08rem;
+  --step-small:   0.85rem;
+
+  /* Spacing */
+  --gutter:       clamp(1.5rem, 5vw, 4rem);
+  --max-width:    760px;
+  --max-width-wide: 1100px;
+
+  /* Misc */
+  --radius:       2px;
+  --speed:        0.3s;
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* ---------- 2. RESET & BASE ---------- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-body);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+
+a {
+  color: var(--indigo);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+  opacity: 0.85;
+  transition: opacity var(--speed);
+}
+a:hover, a:focus-visible { opacity: 1; }
+
+/* Visible focus ring for keyboard nav — accessibility floor */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--rust);
+  outline-offset: 3px;
+}
+
+ul, ol { list-style: none; }
+
+
+/* ---------- 3. LAYOUT ---------- */
+.wrap {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+.wrap-wide {
+  max-width: var(--max-width-wide);
+  margin: 0 auto;
+  padding: 0 var(--gutter);
+}
+
+/* Site header */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(247, 244, 237, 0.92);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--line);
+}
+
+.site-header__inner {
+  max-width: var(--max-width-wide);
+  margin: 0 auto;
+  padding: 1rem var(--gutter);
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.site-header__mark {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+  border-bottom: none;
+}
+.site-header__mark span {
+  color: var(--rust);
+}
+
+.site-nav {
+  display: flex;
+  gap: 1.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.site-nav a {
+  color: var(--ink-soft);
+  border-bottom: 1px solid transparent;
+}
+.site-nav a:hover,
+.site-nav a[aria-current="page"] {
+  color: var(--rust);
+  border-bottom-color: var(--rust);
+}
+
+/* Footer */
+.site-footer {
+  border-top: 1px solid var(--line);
+  margin-top: 6rem;
+  padding: 2.5rem var(--gutter) 3rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+.site-footer .wrap-wide {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 2rem;
+  justify-content: space-between;
+}
+
+
+/* ---------- 4. TYPOGRAPHY ---------- */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  line-height: 1.15;
+  font-weight: 600;
+}
+
+h1 { font-size: var(--step-h1); margin-bottom: 1rem; }
+h2 {
+  font-size: var(--step-h2);
+  margin: 2.6rem 0 1rem;
+  padding-top: 0.4rem;
+}
+h3 { font-size: var(--step-h3); margin: 1.8rem 0 0.6rem; }
+
+p { margin-bottom: 1.3rem; }
+p:last-child { margin-bottom: 0; }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rust);
+  display: block;
+  margin-bottom: 0.6rem;
+}
+
+.lede {
+  font-size: 1.25rem;
+  color: var(--ink-soft);
+  font-family: var(--font-display);
+  font-style: italic;
+}
+
+
+/* ---------- 5. HERO (homepage) ---------- */
+.hero {
+  position: relative;
+  padding: clamp(4rem, 12vh, 7rem) var(--gutter) clamp(3rem, 8vh, 5rem);
+  max-width: var(--max-width-wide);
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.hero__eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--indigo);
+  margin-bottom: 1.4rem;
+  display: block;
+}
+
+.hero h1 {
+  font-size: var(--step-hero);
+  max-width: 14ch;
+  margin-bottom: 1.4rem;
+}
+
+.hero p.lede {
+  max-width: 42ch;
+  margin-bottom: 2.2rem;
+}
+
+.hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  border-top: 1px solid var(--line);
+  padding-top: 1.2rem;
+  max-width: 30rem;
+}
+
+
+/* ---------- 6. ROUTE LINE (signature animation) ----------
+   An SVG path that draws itself on load, like a trade route
+   being traced across a map. Lives behind/beside the hero text. */
+.route-line-wrap {
+  margin-top: 2.5rem;
+  max-width: 640px;
+}
+
+.route-line path {
+  fill: none;
+  stroke: var(--rust);
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-dasharray: 6 7;
+  stroke-dashoffset: 1000;
+  animation: draw-route 2.6s ease-out forwards;
+}
+
+.route-line circle {
+  fill: var(--paper);
+  stroke: var(--indigo);
+  stroke-width: 2;
+  opacity: 0;
+  animation: fade-in-dot 0.4s ease-out forwards;
+}
+.route-line circle:nth-of-type(1) { animation-delay: 0.1s; }
+.route-line circle:nth-of-type(2) { animation-delay: 1.2s; }
+.route-line circle:nth-of-type(3) { animation-delay: 2.3s; }
+
+.route-line text {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  fill: var(--ink-soft);
+  opacity: 0;
+  animation: fade-in-dot 0.4s ease-out forwards;
+}
+.route-line text:nth-of-type(1) { animation-delay: 0.3s; }
+.route-line text:nth-of-type(2) { animation-delay: 1.4s; }
+.route-line text:nth-of-type(3) { animation-delay: 2.5s; }
+
+@keyframes draw-route {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes fade-in-dot {
+  to { opacity: 1; }
+}
+
+
+/* ---------- 7. INDEX RAIL (side coordinates nav) ----------
+   A running list of entries down the side of the page, styled
+   like longitude/latitude markers or a card catalog. Used on
+   the homepage / table of contents. */
+.toc {
+  max-width: var(--max-width-wide);
+  margin: 0 auto;
+  padding: 1rem var(--gutter) 5rem;
+}
+
+.toc__heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--ink);
+  padding-bottom: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+.toc__heading h2 { margin: 0; }
+.toc__count {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+.entry-list {
+  border-top: 1px solid var(--line);
+}
+
+.entry-row {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr auto;
+  gap: 1.5rem;
+  align-items: baseline;
+  padding: 1.4rem 0;
+  border-bottom: 1px solid var(--line);
+  transition: padding-left var(--speed);
+}
+
+.entry-row:hover {
+  padding-left: 0.5rem;
+  border-bottom-color: var(--rust);
+}
+
+.entry-row__coord {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--gold);
+  letter-spacing: 0.02em;
+}
+
+.entry-row__title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  color: var(--ink);
+}
+.entry-row__title a {
+  border-bottom: none;
+  color: inherit;
+}
+.entry-row__title a:hover { color: var(--rust); }
+
+.entry-row__dek {
+  font-size: 0.95rem;
+  color: var(--ink-soft);
+  margin-top: 0.3rem;
+  max-width: 56ch;
+}
+
+.entry-row__tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--indigo);
+  white-space: nowrap;
+  align-self: start;
+}
+
+
+/* ---------- 8. ENTRY CARDS (alt. grid display, optional) ---------- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+.card {
+  border: 1px solid var(--line);
+  background: var(--paper-dim);
+  padding: 1.6rem;
+  transition: transform var(--speed), box-shadow var(--speed);
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px -12px rgba(28, 27, 25, 0.25);
+}
+.card__tag {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--rust);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.card h3 { margin-top: 0.5rem; }
+.card p { font-size: 0.95rem; color: var(--ink-soft); }
+
+
+/* ---------- 9. SINGLE POST PAGE ---------- */
+.post-header {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 3rem var(--gutter) 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.post-header__nav {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  margin-bottom: 1.6rem;
+}
+
+.post-header h1 { font-size: var(--step-h1); }
+
+.post-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+  margin-top: 1.2rem;
+}
+
+.post-body {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 2.5rem var(--gutter) 4rem;
+}
+
+.post-body p,
+.post-body li {
+  font-size: var(--step-body);
+}
+
+.post-body ul,
+.post-body ol {
+  margin: 0 0 1.3rem 0;
+  padding-left: 1.4rem;
+}
+.post-body ul { list-style: disc; }
+.post-body ol { list-style: decimal; }
+
+/* prev/next pager between chapters */
+.post-pager {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 2rem var(--gutter) 4rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.pager-link {
+  flex: 1;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+}
+.pager-link span {
+  display: block;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  margin-bottom: 0.4rem;
+  font-size: 0.7rem;
+}
+.pager-link a {
+  border-bottom: none;
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+.pager-link a:hover { color: var(--rust); }
+.pager-link--next { text-align: right; }
+
+
+/* ---------- 10. IMAGES & CAPTIONS ---------- */
+figure {
+  margin: 2.4rem 0;
+}
+figure img {
+  width: 100%;
+  border: 1px solid var(--line);
+}
+figcaption {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  margin-top: 0.6rem;
+  line-height: 1.5;
+}
+figcaption::before {
+  content: "FIG. — ";
+  color: var(--rust);
+}
+
+/* full-bleed-ish wide image inside a normal-width post */
+figure.figure--wide {
+  max-width: var(--max-width-wide);
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
+
+/* ---------- 11. PULL QUOTES & CALLOUTS ---------- */
+blockquote {
+  margin: 2.4rem 0;
+  padding: 0.4rem 0 0.4rem 1.6rem;
+  border-left: 3px solid var(--rust);
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-style: italic;
+  color: var(--indigo-deep);
+}
+blockquote cite {
+  display: block;
+  margin-top: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-style: normal;
+  color: var(--ink-soft);
+}
+
+.callout {
+  background: var(--paper-dim);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--indigo);
+  padding: 1.4rem 1.6rem;
+  margin: 2.2rem 0;
+  font-size: 0.98rem;
+}
+.callout__label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--indigo);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+
+/* ---------- 12. FOOTNOTES & CITATIONS ---------- */
+.footnotes {
+  margin-top: 3rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--line);
+  font-size: 0.88rem;
+  color: var(--ink-soft);
+}
+.footnotes h2 {
+  font-size: 1rem;
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+}
+.footnotes ol {
+  list-style: decimal;
+  padding-left: 1.3rem;
+}
+.footnotes li { margin-bottom: 0.6rem; }
+
+sup.footnote-ref a {
+  border-bottom: none;
+  color: var(--rust);
+  font-weight: 600;
+}
+
+
+/* ---------- READING PROGRESS BAR (post pages) ---------- */
+#reading-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0%;
+  background: var(--rust);
+  z-index: 100;
+  transition: width 0.1s linear;
+}
+
+
+/* ---------- 13. RESPONSIVE ---------- */
+@media (max-width: 640px) {
+  .site-header__inner { flex-wrap: wrap; gap: 0.6rem; }
+  .site-nav { gap: 1rem; font-size: 0.72rem; flex-wrap: wrap; }
+
+  .entry-row {
+    grid-template-columns: 1fr;
+    gap: 0.3rem;
+  }
+  .entry-row__tag { display: none; }
+
+  .post-pager { flex-direction: column; }
+  .pager-link--next { text-align: left; }
+
+  blockquote { font-size: 1.1rem; }
+}
